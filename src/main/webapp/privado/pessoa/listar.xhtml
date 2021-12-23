@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">CRUD DE PESSOAS</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem" prependId="false">
+                <p:growl />
+                <p:commandButton value="Novo" actionListener="#{controlePessoa.novo()}" icon="pi pi-plus" update="formEdicao" process="@this" oncomplete="PF('dlg').show();" />
+                <p:dataTable value="#{controlePessoa.dao.listaObjetos}" var="obj" id="listagem">
+                    <p:column headerText="ID">
+                        <h:outputLabel value="#{obj.id}" />
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <h:outputLabel value="#{obj.nome}" />
+                    </p:column>
+                    <p:column headerText="CPF">
+                        <h:outputLabel value="#{obj.cpf}" />
+                    </p:column>
+                    <p:column headerText="RG">
+                        <h:outputLabel value="#{obj.rg}" />
+                    </p:column>
+                    <p:column headerText="Email">
+                        <h:outputLabel value="#{obj.email}" />
+                    </p:column>
+                    <p:column headerText="Telefone">
+                        <h:outputLabel value="#{obj.telefone}" />
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton actionListener="#{controlePessoa.alterar(obj.id)}" icon="pi pi-pencil" title="Editar" update="formEdicao" process="@this" oncomplete="PF('dlg').show();" />
+                            <p:commandButton actionListener="#{controlePessoa.excluir(obj.id)}" icon="pi pi-trash" title="Excluir" update="@form" process="@this" />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true" width="50%" height="100%">
+                <h:form id="formEdicao" prependId="false">
+                    <p:growl id="growl" />
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="ID" />
+                            <p:inputText value="#{controlePessoa.objeto.id}" size="5" readonly="true" />
+                            <p:outputLabel value="Nome" for="txtNome" />
+                            <p:inputText value="#{controlePessoa.objeto.nome}" size="40" maxlength="40" id="txtNome" placeholder="Obrigatório" />
+                            <p:outputLabel value="CPF" for="txtCPF" />
+                            <p:inputText value="#{controlePessoa.objeto.cpf}" size="11" maxlength="11" id="txtCPF" placeholder="Obrigatório" />
+                            <p:outputLabel value="RG" for="txtRG" />
+                            <p:inputText value="#{controlePessoa.objeto.rg}" size="8" maxlength="8" id="txtRG" placeholder="Obrigatório" />
+                            <p:outputLabel value="Email" for="txtEmail" />
+                            <p:inputText value="#{controlePessoa.objeto.email}" size="40" maxlength="40" id="txtEmail" placeholder="Obrigatório" />
+                            <p:outputLabel value="Telefone" for="txtTelefone" />
+                            <p:inputText value="#{controlePessoa.objeto.telefone}" size="11" maxlength="11" id="txtTelefone" placeholder="Obrigatório" />
+                        </p:panelGrid>
+                    </div>
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton value="Salvar" icon="pi pi-save" actionListener="#{controlePessoa.salvar()}" update="formEdicao formListagem" oncomplete="if(!args.validationFailed){PF('dlg'.hide();)}" />
+                        </div>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+
